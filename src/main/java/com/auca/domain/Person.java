@@ -2,10 +2,14 @@ package com.auca.domain;
 
 import java.util.UUID;
 
+import javax.annotation.processing.Generated;
+
 import com.auca.enums.Gender;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 
@@ -13,6 +17,7 @@ import jakarta.persistence.MappedSuperclass;
 public class Person {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID personId;
 
     private String firstName;
