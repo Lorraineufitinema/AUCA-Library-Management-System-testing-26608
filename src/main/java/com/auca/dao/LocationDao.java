@@ -1,36 +1,68 @@
 package com.auca.dao;
 
+import java.util.UUID;
+
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import com.auca.domain.Location;
-import com.auca.util.HibernateUtil;
 
 public class LocationDao {
 
-    public Location save(Location location) {
+    private final SessionFactory sessionFactory;
 
-        Transaction transaction = null;
+    public LocationDao(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
-        try (Session session = HibernateUtil
-                .buildSessionFactory("application.properties")
-                .openSession()) {
+    public String save(Location location){
 
-            transaction = session.beginTransaction();
+        Transaction transaction=null;
+
+        try(Session session=sessionFactory.openSession()){
+
+            transaction=session.beginTransaction();
 
             session.persist(location);
 
             transaction.commit();
 
-            return location;
+            return "Location saved";
 
-        } catch (Exception e) {
+        }catch(RuntimeException ex){
 
-            if (transaction != null) {
+            if(transaction!=null){
                 transaction.rollback();
             }
 
-            throw e;
+            return ex.getMessage();
         }
+
     }
+
+    public Location findById(UUID id){
+
+        try(Session session=sessionFactory.openSession()){
+
+            return session.get(Location.class,id);
+
+        }
+
+    }
+
+    public Location findByCode(String code){
+
+        try(Session session=sessionFactory.openSession()){
+
+            return session.createQuery(
+                    "from Location where code=:code",
+                    Location.class)
+                    .setParameter("code",code)
+                    .uniqueResult();
+
+        }
+
+    }
+
 }
