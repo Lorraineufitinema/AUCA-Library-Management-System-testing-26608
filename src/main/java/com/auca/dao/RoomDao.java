@@ -1,5 +1,6 @@
 package com.auca.dao;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.Session;
@@ -46,6 +47,16 @@ public class RoomDao {
         try(Session session=sessionFactory.openSession()){
 
             return session.get(Room.class,id);
+
+        }
+
+    }
+
+    public List<Room> findAll(){
+
+        try(Session session=sessionFactory.openSession()){
+
+            return session.createQuery("from Room", Room.class).list();
 
         }
 

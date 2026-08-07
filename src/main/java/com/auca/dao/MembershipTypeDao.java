@@ -1,5 +1,7 @@
 package com.auca.dao;
 
+import java.util.UUID;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -11,6 +13,16 @@ public class MembershipTypeDao {
 
     public MembershipTypeDao(SessionFactory sessionFactory){
         this.sessionFactory=sessionFactory;
+    }
+
+    public MembershipType findById(UUID id){
+
+        try(Session session=sessionFactory.openSession()){
+
+            return session.get(MembershipType.class, id);
+
+        }
+
     }
 
     public MembershipType findByName(String name){

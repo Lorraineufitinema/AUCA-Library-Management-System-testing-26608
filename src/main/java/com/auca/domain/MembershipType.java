@@ -21,15 +21,19 @@ public class MembershipType {
     @Column(nullable = false)
     private int maxBooks;
 
+    @Column(nullable = false)
+    private int loanPeriodDays;
+
     public MembershipType() {
     }
 
     public MembershipType(UUID membershipTypeId, String membershipName,
-            int dailyFee, int maxBooks) {
+            int dailyFee, int maxBooks, int loanPeriodDays) {
         this.membershipTypeId = membershipTypeId;
         this.membershipName = membershipName;
         this.dailyFee = dailyFee;
         this.maxBooks = maxBooks;
+        this.loanPeriodDays = loanPeriodDays;
     }
 
     public UUID getMembershipTypeId() {
@@ -62,5 +66,13 @@ public class MembershipType {
 
     public void setMaxBooks(int maxBooks) {
         this.maxBooks = maxBooks;
+    }
+
+    public int getLoanPeriodDays() {
+        return loanPeriodDays;
+    }
+
+    public void setLoanPeriodDays(int loanPeriodDays) {
+        this.loanPeriodDays = loanPeriodDays;
     }
 }

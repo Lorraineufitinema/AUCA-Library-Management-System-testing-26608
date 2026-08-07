@@ -7,7 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import com.auca.domain.Borrower;
-import com.auca.domain.Borrower;
+
 
 public class BorrowerDao {
 
@@ -47,6 +47,20 @@ public class BorrowerDao {
         try(Session session=sessionFactory.openSession()){
 
             return session.get(Borrower.class,id);
+
+        }
+
+    }
+
+    public long countActiveBorrows(UUID readerId){
+
+        try(Session session=sessionFactory.openSession()){
+
+            return session.createQuery(
+                    "select count(b) from Borrower b where b.reader.personId=:readerId and b.returnDate is null",
+                    Long.class)
+                    .setParameter("readerId", readerId)
+                    .uniqueResult();
 
         }
 

@@ -1,5 +1,6 @@
 package com.auca.dao;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.Session;
@@ -7,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import com.auca.domain.Location;
+import com.auca.enums.LocationType;
 
 public class LocationDao {
 
@@ -62,6 +64,21 @@ public class LocationDao {
                     .uniqueResult();
 
         }
+
+    }
+
+    public Location findProvinceByVillageId(UUID villageId){
+
+        Location current = findById(villageId);
+
+        while (current != null) {
+            if (current.getLocationType() == LocationType.PROVINCE) {
+                return current;
+            }
+            current = current.getParentLocation();
+        }
+
+        return null;
 
     }
 

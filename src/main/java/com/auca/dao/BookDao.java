@@ -51,4 +51,29 @@ public class BookDao {
 
     }
 
+    public String update(Book book){
+
+        Transaction transaction=null;
+
+        try(Session session=sessionFactory.openSession()){
+
+            transaction=session.beginTransaction();
+
+            session.merge(book);
+
+            transaction.commit();
+
+            return "Book updated";
+
+        }catch(RuntimeException ex){
+
+            if(transaction!=null){
+                transaction.rollback();
+            }
+
+            return ex.getMessage();
+        }
+
+    }
+
 }
